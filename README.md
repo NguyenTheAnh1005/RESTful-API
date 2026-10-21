@@ -9,7 +9,7 @@ Mở terminal PowerShell trong thư mục dự án (Docker Desktop phải đang 
 ```powershell
 docker compose up -d --build --wait
 docker compose ps
-Invoke-RestMethod http://localhost:3002/health
+npm run health
 ```
 
 Nếu terminal chưa nhận `docker` sau khi cài Docker Desktop, mở lại terminal hoặc dùng:
