@@ -35,7 +35,7 @@ Get-Content scripts/products.sql | docker compose exec -T db psql -U lab2 -d lab
 
 Script thêm X và Y, giá lần lượt 100000 và 200000, tồn kho mỗi loại 20. Ghi lại pid trả về để điền pidX và pidY trong Postman. Mỗi lần chạy script sẽ thêm cặp sản phẩm mới; đây là dữ liệu demo, không phải chức năng sản phẩm mở rộng.
 
-6. **Đăng ký và đăng nhập:** import `postman/Lab2.postman_collection.json`. Request đăng ký tự tạo username mới theo thời gian để chạy lại không trùng; đặt pidX/pidY đúng kết quả CLI. Chạy request 2 và 3: tài khoản tự gán role normal và membership score 10; response đăng nhập chứa token và Postman tự lưu biến token. Không trả mật khẩu/hash ra response.
+6. **Đăng ký và đăng nhập:** import `postman/Lab2.postman_collection.json`. Request đăng ký tự tạo username mới theo thời gian để chạy lại không trùng; đặt pidX/pidY đúng kết quả CLI. Chạy request 2 và 3: tài khoản tự gán role normal và membership score 10; response đăng nhập chứa token và Postman tự lưu biến token. `fullname` có thể bỏ qua; khi đó lưu username làm tên mặc định để vẫn giữ đúng cột `User.fullname` trong database. Không trả mật khẩu/hash ra response.
 7. **Đặt hàng và shipment:** chạy request 4 để thấy 401 khi thiếu token. Chạy request 5 để đặt X x2, Y x5. `createat` lấy thời gian database, hiển thị ISO UTC. Request 6 xem đơn và detail; request 7 xem shipment. `unit_price` lấy giá từ Product tại lúc đặt. Shipment tự tạo với status `pending`; đây là giá trị khởi tạo tối thiểu, đề không quy định chuỗi trạng thái. Chỉ người mua xem được đơn của mình.
 8. **Kiểm tra bằng CLI:**
 
@@ -50,7 +50,7 @@ Sau đúng một lượt mua với cặp sản phẩm vừa tạo: X còn 18, Y 
 | Method | Path | Nội dung |
 | --- | --- | --- |
 | GET | /health | Tình trạng API và database |
-| POST | /auth/register | username, fullname, password |
+| POST | /auth/register | username, password; fullname không bắt buộc |
 | POST | /auth/login | username, password; trả token |
 | POST | /orders | Bearer token; items gồm pid và qty |
 | GET | /orders/:id | Bearer token; xem đơn và chi tiết |

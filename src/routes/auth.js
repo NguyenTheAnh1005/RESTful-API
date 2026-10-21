@@ -6,12 +6,14 @@ const publicUser = { uid: true, username: true, fullname: true, role: true, memb
 router.post('/register', async (req, res) => {
   const { username, fullname, password } = req.body || {};
   if (typeof username !== 'string' || !username.trim() || username.length > 50 ||
-      typeof fullname !== 'string' || !fullname.trim() || fullname.length > 100 ||
+      (fullname != null && (typeof fullname !== 'string' || fullname.length > 100)) ||
       typeof password !== 'string' || !password || Buffer.byteLength(password) > 72)
-    return res.status(400).json({ error: 'username, fullname, password thiếu hoặc không hợp lệ (mật khẩu tối đa 72 byte)' });
+    return res.status(400).json({ error: 'username hoặc password thiếu hay không hợp lệ; fullname tối đa 100 ký tự (mật khẩu tối đa 72 byte)' });
+  const normalizedUsername = username.trim();
+  const resolvedFullname = typeof fullname === 'string' && fullname.trim() ? fullname.trim() : normalizedUsername;
   const role = await db.role.findFirstOrThrow({ where: { rolename: 'normal' } });
   const membership = await db.memberShip.findFirstOrThrow({ where: { mname: 'normal', score: 10 } });
-  const user = await db.user.create({ data: { username: username.trim(), fullname: fullname.trim(),
+  const user = await db.user.create({ data: { username: normalizedUsername, fullname: resolvedFullname,
     password: await bcrypt.hash(password, 10), roleid: role.roleid, mid: membership.mid }, select: publicUser });
   res.status(201).json(user);
 });

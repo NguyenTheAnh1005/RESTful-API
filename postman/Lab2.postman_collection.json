@@ -66,7 +66,7 @@
         "url": "{{baseUrl}}/auth/register",
         "body": {
           "mode": "raw",
-          "raw": "{\"username\": \"{{username}}\", \"fullname\": \"Sinh viên Lab 2\", \"password\": \"{{password}}\"}",
+          "raw": "{\"username\": \"{{username}}\", \"password\": \"{{password}}\"}",
           "options": {
             "raw": {
               "language": "json"
